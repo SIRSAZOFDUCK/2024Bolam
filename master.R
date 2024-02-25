@@ -33,7 +33,7 @@ library(msm)
 
 # Select BNF codes for analysis
 setwd(path.project) # Select project folder
-keep <- read.csv("bnf_codes_pop.csv") # Read in BNF codes
+keep <- read.csv("bnf_codes_pop.csv") # Read in BNF codes, from https://applications.nhsbsa.nhs.uk/infosystems/data/showDataSelector.do?reportId=126
 keep <- as.vector(keep$bnf_code) # List as vector
 
 # Set working directory
