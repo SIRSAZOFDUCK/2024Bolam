@@ -33,7 +33,7 @@ library(msm)
 
 # Select BNF codes for analysis
 setwd(path.project) # Select project folder
-keep <- read.csv("bnf_codes_pop.csv") # Read in BNF codes, from https://applications.nhsbsa.nhs.uk/infosystems/data/showDataSelector.do?reportId=126
+keep <- read.csv("bnf_codes_oral.csv") # Read in BNF codes, from https://applications.nhsbsa.nhs.uk/infosystems/data/showDataSelector.do?reportId=126
 keep <- as.vector(keep$bnf_code) # List as vector
 
 # Set working directory
@@ -81,7 +81,7 @@ data_imd <- fingertips_data(IndicatorID = 93553, AreaTypeID = 7) %>% # IMD score
   # Keep required fields only
   select(AreaCode, AreaName, ParentName, Value) %>% 
   # Rename columns
-  rename("practice_code" = "AreaCode", 
+  dplyr::rename("practice_code" = "AreaCode", 
          "gp.name" = "AreaName",
          "pcn.name" = "ParentName",
          "imd.score" = "Value") %>%
@@ -110,7 +110,7 @@ data_listsize <- data_listsize %>%
   # select required columns
   select(code_8, total.listsize) %>%
   # rename practice code column to match EPD
-  rename(practice_code = code_8) 
+  dplyr::rename(practice_code = code_8) 
 
 ### Link and process data -----
 
@@ -385,12 +385,12 @@ test1 <- cor.test(df$imd.score, df$items.per.1000, method = "spearman") # test f
 peeVal <- as.numeric(test1$`p.value`) # extract p value
 if(peeVal<0.001){peeVal="p < 0.001"} #set p value ranges
 if(peeVal<0.01 && peeVal>=0.001){peeVal="p < 0.01"}
-if(peeVal>=0.01){peeVal=round_any(peeVal,0.01, f=round)}
+#if(peeVal>=0.01){peeVal=round_any(peeVal,0.01, f=round)}
 corVal <- round_any(as.numeric(test1$estimate),0.01,f=round)
 equals <- " = "
 
 #set max y limit
-if(max(dfitems.per.1000)<150){   # set upper y-axis limit to nearest 10 if highest number is <150
+if(max(df$items.per.1000)<150){   # set upper y-axis limit to nearest 10 if highest number is <150
   maxy=round_any(max(df$items.per.1000), 10, f = ceiling)
 }
 
